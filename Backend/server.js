@@ -23,10 +23,6 @@ const PORT = process.env.PORT || 5000;
 // Usamos '../' porque desde 'Backend' tenemos que salir una carpeta para entrar a 'Frontend'
 app.use(express.static(path.join(__dirname, '../Frontend')));
 
-// Esto asegura que cualquier ruta que no sea de API, cargue tu index.html
-app.get('/*', (req, res) => {
-    res.sendFile(path.join(__dirname, '../Frontend', 'index.html'));
-});
 // GOOGLE
 const passport = require('passport'); // <--- AÑADE ESTO AQUÍ
 const GoogleStrategy = require('passport-google-oauth20').Strategy; // <--- AÑADE ESTO AQUÍ
@@ -92,7 +88,10 @@ app.get('/api/auth/google/callback',
 
 // ─── CONEXIÓN A MONGODB ───────────────────────────────────────
 console.log("Intentando conectar a:", process.env.MONGO_URI); // Debug para asegurar que carga
-
+// Esto asegura que cualquier ruta que no sea de API, cargue tu index.html
+app.get('/*', (req, res) => {
+    res.sendFile(path.join(__dirname, '../Frontend', 'index.html'));
+});
 mongoose
   .connect(process.env.MONGO_URI, { 
     family: 4, // <--- ESTO ES LO QUE SOLUCIONA EL ERROR ECONNREFUSED
@@ -106,3 +105,5 @@ mongoose
     console.error('❌ Error al conectar a MongoDB:', err.message);
     process.exit(1);
   });
+
+  
