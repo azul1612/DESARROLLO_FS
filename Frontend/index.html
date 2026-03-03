@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>EcoHuella — Tu Impacto Verde</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Nunito:wght@300;400;600;700&display=swap" rel="stylesheet"/>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+</head>
+<body class="logged-out">
+
+  <!-- ============================================================
+       AUTH SCREEN  (login + registro)
+  ============================================================ -->
+  <div id="loginScreen" class="login-screen">
+
+    <!-- Panel izquierdo: branding -->
+    <div class="login-left">
+      <div class="login-left-inner">
+        <div class="login-logo">
+          <span class="login-leaf">🌿</span>
+          <span class="login-brand">EcoHuella</span>
+        </div>
+        <h2 class="login-tagline">Cada hábito que eliges<br/><em>transforma el planeta.</em></h2>
+        <p class="login-sub">Mide, reduce y celebra tu huella de carbono con una comunidad que cuida la Tierra.</p>
+        <div class="login-stats">
+          <div class="lstat"><span class="lstat-num">12,840</span><span class="lstat-label">usuarios activos</span></div>
+          <div class="lstat"><span class="lstat-num">98 ton</span><span class="lstat-label">CO₂ ahorradas</span></div>
+          <div class="lstat"><span class="lstat-num">4,620</span><span class="lstat-label">árboles equivalentes</span></div>
+        </div>
+        <div class="login-deco deco-1"></div>
+        <div class="login-deco deco-2"></div>
+        <div class="login-deco deco-3"></div>
+      </div>
+    </div>
+
+    <!-- Panel derecho: formularios -->
+    <div class="login-right">
+      <div class="login-form-wrap">
+
+        <!-- Pestañas -->
+        <div class="auth-tabs">
+          <button class="auth-tab active" id="tabLogin">Iniciar Sesión</button>
+          <button class="auth-tab" id="tabSignup">Crear Cuenta</button>
+          <div class="auth-tab-indicator" id="tabIndicator"></div>
+        </div>
+
+        <!-- ─── PANEL LOGIN ─── -->
+        <div class="auth-panel active" id="panelLogin">
+          <p class="login-form-sub">Bienvenido de vuelta 👋</p>
+
+          <!-- Google -->
+          <div class="google-btn-wrap">
+            <button class="google-btn" id="googleBtnLogin">
+              <svg width="20" height="20" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
+              Continuar con Google
+            </button>
+          </div>
+          <div class="login-divider"><span>o con tu correo</span></div>
+
+          <form class="login-form" id="loginForm" novalidate>
+            <div class="field-group">
+              <label class="field-label">Correo electrónico</label>
+              <div class="field-input-wrap" id="loginEmailWrap">
+                <span class="field-icon">✉</span>
+                <input type="email" id="loginEmailInput" placeholder="tu@correo.com" autocomplete="email"/>
+                <span class="field-status" id="loginEmailStatus"></span>
+              </div>
+              <span class="field-error" id="loginEmailError"></span>
+            </div>
+            <div class="field-group">
+              <label class="field-label">Contraseña</label>
+              <div class="field-input-wrap">
+                <span class="field-icon">🔒</span>
+                <input type="password" id="loginPassInput" placeholder="••••••••" autocomplete="current-password"/>
+                <button type="button" class="toggle-pass" id="toggleLoginPass">👁</button>
+              </div>
+              <span class="field-error" id="loginPassError"></span>
+            </div>
+            <div class="login-options">
+              <label class="remember-label"><input type="checkbox" id="rememberMe"/> Recordarme</label>
+              <a href="#" class="forgot-link" id="forgotLink">¿Olvidaste tu contraseña?</a>
+            </div>
+            <button type="submit" class="btn-login" id="btnLogin">
+              <span id="btnLoginText">Iniciar Sesión</span>
+              <span class="btn-loader" id="btnLoginLoader" style="display:none">⟳</span>
+            </button>
+          </form>
+          <p class="auth-switch-text">¿No tienes cuenta? <a href="#" id="goToSignup">Regístrate gratis →</a></p>
+          <p class="login-about-link">¿Quiénes somos? <a href="#" id="aboutFromLogin">Conoce nuestra misión →</a></p>
+        </div>
+
+        <!-- ─── PANEL REGISTRO ─── -->
+        <div class="auth-panel" id="panelSignup">
+          <p class="login-form-sub">Únete a la comunidad verde 🌱</p>
+
+          <!-- Google -->
+          <div class="google-btn-wrap">
+            <button class="google-btn" id="googleBtnSignup">
+              <svg width="20" height="20" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
+              Registrarse con Google
+            </button>
+          </div>
+          <div class="login-divider"><span>o crea tu cuenta</span></div>
+
+          <form class="login-form" id="signupForm" novalidate>
+            <!-- Nombre -->
+            <div class="field-group">
+              <label class="field-label">Nombre completo</label>
+              <div class="field-input-wrap" id="signupNameWrap">
+                <span class="field-icon">👤</span>
+                <input type="text" id="signupNameInput" placeholder="Tu nombre" autocomplete="name"/>
+                <span class="field-status" id="signupNameStatus"></span>
+              </div>
+              <span class="field-error" id="signupNameError"></span>
+            </div>
+            <!-- Email -->
+            <div class="field-group">
+              <label class="field-label">Correo electrónico</label>
+              <div class="field-input-wrap" id="signupEmailWrap">
+                <span class="field-icon">✉</span>
+                <input type="email" id="signupEmailInput" placeholder="tu@correo.com" autocomplete="email"/>
+                <span class="field-status" id="signupEmailStatus"></span>
+              </div>
+              <span class="field-error" id="signupEmailError"></span>
+            </div>
+            <!-- Password -->
+            <div class="field-group">
+              <label class="field-label">Contraseña</label>
+              <div class="field-input-wrap">
+                <span class="field-icon">🔒</span>
+                <input type="password" id="signupPassInput" placeholder="Mínimo 6 caracteres" autocomplete="new-password"/>
+                <button type="button" class="toggle-pass" id="toggleSignupPass">👁</button>
+              </div>
+              <div class="pass-strength-bar"><div class="pass-strength-fill" id="passStrengthFill"></div></div>
+              <span class="pass-strength-label" id="passStrengthLabel"></span>
+              <span class="field-error" id="signupPassError"></span>
+            </div>
+            <!-- Confirm Password -->
+            <div class="field-group">
+              <label class="field-label">Confirmar contraseña</label>
+              <div class="field-input-wrap" id="signupConfirmWrap">
+                <span class="field-icon">🔐</span>
+                <input type="password" id="signupConfirmInput" placeholder="Repite tu contraseña" autocomplete="new-password"/>
+                <span class="field-status" id="signupConfirmStatus"></span>
+              </div>
+              <span class="field-error" id="signupConfirmError"></span>
+            </div>
+            <!-- Terms -->
+            <label class="terms-label">
+              <input type="checkbox" id="acceptTerms"/>
+              <span>Acepto los <a href="#" class="terms-link">Términos de Uso</a> y la <a href="#" class="terms-link">Política de Privacidad</a></span>
+            </label>
+            <span class="field-error" id="termsError"></span>
+
+            <button type="submit" class="btn-login" id="btnSignup">
+              <span id="btnSignupText">Crear mi cuenta 🌱</span>
+              <span class="btn-loader" id="btnSignupLoader" style="display:none">⟳</span>
+            </button>
+          </form>
+          <p class="auth-switch-text">¿Ya tienes cuenta? <a href="#" id="goToLogin">Inicia sesión →</a></p>
+        </div>
+
+      </div><!-- /.login-form-wrap -->
+    </div><!-- /.login-right -->
+  </div><!-- /#loginScreen -->
+
+  <!-- ============================================================
+       APP WRAPPER
+  ============================================================ -->
+  <div id="appWrapper" style="display:none; flex:1;">
+
+    <aside class="sidebar">
+      <div class="logo">
+        <span class="leaf">🌿</span>
+        <span class="logo-text">EcoHuella</span>
+      </div>
+      <nav>
+        <a href="#" class="nav-link active" data-section="dashboard"><span class="icon">◉</span> Dashboard</a>
+        <a href="#" class="nav-link" data-section="habits"><span class="icon">✦</span> Mis Hábitos</a>
+        <a href="#" class="nav-link" data-section="challenges"><span class="icon">⚡</span> Desafíos</a>
+        <a href="#" class="nav-link" data-section="badges"><span class="icon">✧</span> Logros</a>
+        <a href="#" class="nav-link" data-section="about"><span class="icon">◈</span> Quiénes Somos</a>
+      </nav>
+      <div class="sidebar-footer">
+        <div class="user-card">
+          <div class="avatar" id="sidebarAvatar">🌱</div>
+          <div>
+            <div class="user-name" id="sidebarName">Eco Guardián</div>
+            <div class="user-level" id="sidebarEmail">usuario@correo.com</div>
+          </div>
+        </div>
+        <button class="btn-logout" id="logoutBtn">↩ Cerrar sesión</button>
+      </div>
+    </aside>
+
+    <main class="main">
+
+      <!-- DASHBOARD -->
+      <section id="dashboard" class="section active">
+        <header class="page-header">
+          <div>
+            <h1>Tu Impacto de Hoy</h1>
+            <p class="subtitle">Cada acción cuenta. Aquí está tu huella verde.</p>
+          </div>
+          <button class="btn-primary" id="logHabitBtn">+ Registrar Hábito</button>
+        </header>
+        <div class="impact-banner">
+          <div class="impact-stat"><span class="impact-number" id="treesPlanted">0</span><span class="impact-label">🌳 árboles equivalentes hoy</span></div>
+          <div class="impact-divider"></div>
+          <div class="impact-stat"><span class="impact-number" id="co2Saved">0</span><span class="impact-label">kg CO₂ ahorrados esta semana</span></div>
+          <div class="impact-divider"></div>
+          <div class="impact-stat"><span class="impact-number" id="streakDays">0</span><span class="impact-label">🔥 días de racha activa</span></div>
+        </div>
+        <div class="charts-row">
+          <div class="card chart-card wide">
+            <div class="card-header"><h3>Progreso Semanal de CO₂</h3><span class="trend positive" id="weekTrend">↓ 12% vs semana pasada</span></div>
+            <canvas id="weeklyChart" height="180"></canvas>
+          </div>
+          <div class="card chart-card">
+            <div class="card-header"><h3>Categorías</h3></div>
+            <canvas id="categoryChart" height="180"></canvas>
+          </div>
+        </div>
+        <div class="card forest-card">
+          <div class="card-header"><h3>🌲 Tu Bosque Virtual</h3><span class="forest-level" id="forestLevel">Bosque Joven</span></div>
+          <div class="forest-container" id="forestContainer"></div>
+          <div class="forest-progress-bar"><div class="forest-progress-fill" id="forestProgressFill"></div></div>
+          <p class="forest-caption" id="forestCaption">Registra más hábitos para que tu bosque crezca</p>
+        </div>
+        <div class="card">
+          <div class="card-header"><h3>Hábitos de Hoy</h3><span class="date-label" id="todayDate"></span></div>
+          <div class="habits-today" id="habitsToday"><p class="empty-state">Aún no has registrado hábitos hoy. ¡Empieza ahora!</p></div>
+          <div class="card savings-card" id="savingsCard">
+            <div class="card-header">
+              <h3>💰 El Valor de Tu Ahorro</h3>
+              <span class="savings-badge">ExchangeRate-API</span>
+            </div>
+            <p class="savings-intro">
+              Al evitar el uso de combustible con tus hábitos, también ahorras dinero.
+              Aquí puedes ver cuánto equivale ese ahorro en distintas monedas.
+            </p>
+
+            <!-- Selector de moneda base -->
+            <div class="savings-controls">
+              <div class="savings-control-group">
+                <label for="savingsCurrency">Ver en</label>
+                <select id="savingsCurrency" class="savings-select">
+                  <option value="MXN">🇲🇽 Peso mexicano (MXN)</option>
+                  <option value="USD">🇺🇸 Dólar (USD)</option>
+                  <option value="EUR">🇪🇺 Euro (EUR)</option>
+                  <option value="CAD">🇨🇦 Dólar canadiense (CAD)</option>
+                  <option value="GBP">🇬🇧 Libra esterlina (GBP)</option>
+                  <option value="BRL">🇧🇷 Real brasileño (BRL)</option>
+                  <option value="COP">🇨🇴 Peso colombiano (COP)</option>
+                  <option value="ARS">🇦🇷 Peso argentino (ARS)</option>
+                </select>
+              </div>
+              <button class="btn-refresh" id="savingsRefresh" title="Actualizar tasas">
+                <span id="refreshIcon">⟳</span> Actualizar tasas
+              </button>
+            </div>
+
+            <!-- Grid de ahorros -->
+            <div class="savings-grid" id="savingsGrid">
+              <div class="savings-item">
+                <span class="savings-item-label">🚴 Sin combustible (hoy)</span>
+                <span class="savings-amount" id="savingToday">—</span>
+              </div>
+              <div class="savings-item">
+                <span class="savings-item-label">📅 Esta semana</span>
+                <span class="savings-amount" id="savingWeek">—</span>
+              </div>
+              <div class="savings-item">
+                <span class="savings-item-label">📆 Total acumulado</span>
+                <span class="savings-amount" id="savingTotal">—</span>
+              </div>
+              <div class="savings-item highlight">
+                <span class="savings-item-label">🌍 Tasa actual (MXN → seleccionada)</span>
+                <span class="savings-amount" id="savingRate">—</span>
+              </div>
+            </div>
+
+            <!-- Estado de carga / error -->
+            <div class="savings-status" id="savingsStatus"></div>
+
+            <p class="savings-note">
+              * Cálculo basado en el precio promedio de la gasolina en México (~$22 MXN/litro)
+              y un rendimiento de 12 km/litro. Tasas actualizadas en tiempo real.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- HABITS -->
+      <section id="habits" class="section">
+        <header class="page-header"><div><h1>Mis Hábitos</h1><p class="subtitle">Selecciona y registra tus acciones sostenibles</p></div></header>
+        <div class="habits-grid" id="habitsGrid"></div>
+      </section>
+
+      <!-- CHALLENGES -->
+      <section id="challenges" class="section">
+        <header class="page-header"><div><h1>Desafíos Comunitarios</h1><p class="subtitle">Únete y suma tu impacto al colectivo</p></div></header>
+        <div class="challenges-list" id="challengesList"></div>
+      </section>
+
+      <!-- BADGES -->
+      <section id="badges" class="section">
+        <header class="page-header"><div><h1>Mis Logros</h1><p class="subtitle">Medallas ganadas por tus acciones sostenibles</p></div></header>
+        <div class="badges-grid" id="badgesGrid"></div>
+      </section>
+
+      <!-- ABOUT -->
+      <section id="about" class="section">
+        <div class="about-hero">
+          <div class="about-hero-text">
+            <span class="about-eyebrow">Nuestra historia</span>
+            <h1 class="about-title">Creemos que el cambio<br/><em>empieza en lo cotidiano.</em></h1>
+            <p class="about-hero-desc">EcoHuella nació de una pregunta simple: ¿qué pasaría si cada persona pudiera ver, en tiempo real, el impacto positivo de sus decisiones diarias? Esa pregunta se convirtió en nuestra misión.</p>
+          </div>
+          <div class="about-hero-visual">
+            <div class="about-globe">🌍</div>
+            <div class="about-orbit orbit-1"><span>🚴</span></div>
+            <div class="about-orbit orbit-2"><span>🌱</span></div>
+            <div class="about-orbit orbit-3"><span>☀️</span></div>
+          </div>
+        </div>
+        <div class="about-numbers">
+          <div class="about-num-card"><span class="about-num">1.5°C</span><span class="about-num-label">El límite crítico de calentamiento global que debemos evitar</span></div>
+          <div class="about-num-card accent"><span class="about-num">45%</span><span class="about-num-label">De reducción de emisiones que necesita el mundo para 2030</span></div>
+          <div class="about-num-card"><span class="about-num">8 ton</span><span class="about-num-label">De CO₂ produce al año una persona promedio en México</span></div>
+          <div class="about-num-card green"><span class="about-num">2 ton</span><span class="about-num-label">Es la meta de huella de carbono sostenible por persona al año</span></div>
+        </div>
+        <div class="about-why">
+          <div class="card about-why-card"><span class="about-why-icon">🌡️</span><h3>El problema es urgente</h3><p>El calentamiento global ya está aquí: sequías, incendios y huracanes más intensos. El IPCC advierte que tenemos menos de una década para actuar de forma decisiva antes de alcanzar puntos de no retorno.</p></div>
+          <div class="card about-why-card"><span class="about-why-icon">💡</span><h3>Los hábitos importan más de lo que crees</h3><p>Estudios demuestran que hasta el 72% de las emisiones globales dependen del comportamiento de los consumidores. Cambiar qué comemos, cómo nos movemos y cuánta energía usamos es la palanca más poderosa.</p></div>
+          <div class="card about-why-card"><span class="about-why-icon">🤝</span><h3>El efecto comunidad es real</h3><p>Cuando las personas ven que sus acciones forman parte de un movimiento colectivo, su adherencia a hábitos sostenibles aumenta hasta un 3x. EcoHuella convierte lo individual en colectivo.</p></div>
+        </div>
+        <div class="card about-team-card">
+          <div class="card-header"><h3>El equipo detrás de EcoHuella</h3></div>
+          <p class="about-team-intro">Somos un equipo multidisciplinario de ambientalistas, diseñadores y desarrolladores unidos por la convicción de que la tecnología debe ser una herramienta para el bien del planeta.</p>
+          <div class="team-grid">
+            <div class="team-member"><div class="team-avatar">🌿</div><div class="team-name">Azul Jimenez</div><div class="team-role">Fundadora · Ing. Ambiental</div></div>
+            <div class="team-member"><div class="team-avatar">📊</div><div class="team-name">Ezequiel Herrera</div><div class="team-role">Co-fundador · Datos & IA</div></div>
+            <div class="team-member"><div class="team-avatar">🎨</div><div class="team-name">Alan Martínez</div><div class="team-role">Diseño de Experiencia</div></div>
+            <div class="team-member"><div class="team-avatar">🌱</div><div class="team-name">Benjamín Moreno</div><div class="team-role">Comunidad & Educación</div></div>
+          </div>
+        </div>
+        <div class="about-values">
+          <h2 class="about-section-title">Nuestros valores</h2>
+          <div class="values-list">
+            <div class="value-item"><span class="value-num">01</span><div><div class="value-name">Transparencia radical</div><div class="value-desc">Cada cifra de CO₂ está respaldada por metodologías científicas verificables. Sin greenwashing.</div></div></div>
+            <div class="value-item"><span class="value-num">02</span><div><div class="value-name">Refuerzo positivo</div><div class="value-desc">No te decimos lo que haces mal. Te mostramos el bien que ya estás haciendo y te ayudamos a hacerlo crecer.</div></div></div>
+            <div class="value-item"><span class="value-num">03</span><div><div class="value-name">Acción colectiva</div><div class="value-desc">El planeta no lo salva un superhéroe. Lo salvan millones de personas tomando mejores decisiones cada día.</div></div></div>
+            <div class="value-item"><span class="value-num">04</span><div><div class="value-name">Accesibilidad universal</div><div class="value-desc">La sostenibilidad no es un lujo. Diseñamos para que cualquier persona, sin importar su contexto, pueda participar.</div></div></div>
+          </div>
+        </div>
+        <div class="about-cta">
+          <h2>¿Listo para medir tu impacto?</h2>
+          <p>Cada acción que registras es un voto por el planeta que queremos.</p>
+          <button class="btn-primary about-cta-btn" id="aboutToDashboard">Ir a mi Dashboard →</button>
+        </div>
+      </section>
+
+    </main>
+  </div><!-- /#appWrapper -->
+
+  <!-- MODAL: LOG HABIT -->
+  <div class="modal-overlay" id="modalOverlay">
+    <div class="modal" id="modal">
+      <div class="modal-header"><h3>Registrar Hábito</h3><button class="modal-close" id="modalClose">✕</button></div>
+      <div class="modal-body">
+        <div class="habit-select-list" id="habitSelectList"></div>
+        <div class="modal-input-row" id="modalInputRow" style="display:none">
+          <label id="modalLabel"></label>
+          <input type="number" id="modalInput" min="0" step="0.1" placeholder="0"/>
+          <span id="modalUnit"></span>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-secondary" id="modalCancel">Cancelar</button>
+        <button class="btn-primary" id="modalConfirm">Confirmar ✓</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+  <script src="app.js"></script>
+</body>
+</html>
