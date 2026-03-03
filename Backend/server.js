@@ -24,7 +24,7 @@ const PORT = process.env.PORT || 5000;
 app.use(express.static(path.join(__dirname, '../Frontend')));
 
 // Esto asegura que cualquier ruta que no sea de API, cargue tu index.html
-app.get('*', (req, res) => {
+app.get('/*', (req, res) => {
     res.sendFile(path.join(__dirname, '../Frontend', 'index.html'));
 });
 // GOOGLE
