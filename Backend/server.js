@@ -89,9 +89,9 @@ app.get('/api/auth/google/callback',
 // ─── CONEXIÓN A MONGODB ───────────────────────────────────────
 console.log("Intentando conectar a:", process.env.MONGO_URI); // Debug para asegurar que carga
 // Esto asegura que cualquier ruta que no sea de API, cargue tu index.html
-app.get('/*', (req, res) => {
-    res.sendFile(path.join(__dirname, '../Frontend', 'index.html'));
-});
+//app.get('*', (req, res) => {
+  //  res.sendFile(path.join(__dirname, '../Frontend', 'index.html'));
+//});
 mongoose
   .connect(process.env.MONGO_URI, { 
     family: 4, // <--- ESTO ES LO QUE SOLUCIONA EL ERROR ECONNREFUSED
