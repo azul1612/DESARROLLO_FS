@@ -17,7 +17,7 @@ const logRoutes = require('./routes/logRoutes');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
-const path = require('path');
+// const path = require('path');
 
 // Esto le dice al servidor que busque los archivos en la carpeta Frontend
 // Usamos '../' porque desde 'Backend' tenemos que salir una carpeta para entrar a 'Frontend'
